@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+:root {
+  --bg-from: #1e1b4b;        /* indigo-950 */
+  --bg-to: #4c1d95;          /* violet-900 */
+  --glass: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --well: rgba(10, 8, 30, 0.45);
+  --fg: #ede9fe;
+  --fg-dim: #a5b4fc;
+  --p1: #f59e0b;             /* amber */
+  --p1-hi: #fbbf24;
+  --p2: #f43f5e;             /* rose */
+  --p2-hi: #fb7185;
+  --focus: #22d3ee;          /* cyan focus ring */
+}
+
+@theme inline {
+  --color-glass: var(--glass);
+  --color-glass-border: var(--glass-border);
+  --color-well: var(--well);
+  --color-fg: var(--fg);
+  --color-fg-dim: var(--fg-dim);
+  --color-p1: var(--p1);
+  --color-p2: var(--p2);
+  --color-focus: var(--focus);
+  --font-sans: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  min-height: 100dvh;
+  background: linear-gradient(160deg, var(--bg-from), var(--bg-to));
+  color: var(--fg);
+  font-family: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+}
+
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+@keyframes win-pulse {
+  0%, 100% { box-shadow: 0 0 12px 2px rgba(255, 255, 255, 0.55); }
+  50% { box-shadow: 0 0 24px 8px rgba(255, 255, 255, 0.85); }
+}
+.win-cell { animation: win-pulse 1.2s ease-in-out infinite; }
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+.shake { animation: shake 0.18s linear 2; }
+
+@media (prefers-reduced-motion: reduce) {
+  .win-cell, .shake { animation: none; }
+  .win-cell { box-shadow: 0 0 16px 4px rgba(255, 255, 255, 0.7); }
+}
