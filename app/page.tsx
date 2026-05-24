@@ -20,14 +20,15 @@ export default function Home() {
   const [started, setStarted] = useState(false);
   const [hintCol, setHintCol] = useState<number | null>(null);
   const [data, setData] = useState<StoredData | null>(null); // null until client mount
-  const storageOk = useRef(true);
+  const [storageOk, setStorageOk] = useState(true);
   // True once this game's first finish has been recorded. Undoing a decided
   // game and replaying does NOT record again — the first outcome stands.
   const recordedThisGame = useRef(false);
 
   // Hydrate persisted data on mount (storage is client-only).
   useEffect(() => {
-    storageOk.current = isStorageAvailable();
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional one-time hydration from localStorage
+    setStorageOk(isStorageAvailable());
     setData(loadData());
   }, []);
 
@@ -62,6 +63,7 @@ export default function Home() {
   // Sounds + hint clearing on every move.
   useEffect(() => {
     if (state.moveCount === 0) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- a move invalidates any shown hint
     setHintCol(null);
     if (!soundOn) return;
     if (state.status === 'won') playWin();
@@ -76,6 +78,7 @@ export default function Home() {
     recordedThisGame.current = true;
     if (state.mode === 'ai') {
       const outcome = state.status === 'draw' ? 'draw' : state.win!.player === 1 ? 'win' : 'loss';
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- recording a finished game is a one-shot sync
       updateData(recordResult(data, { mode: 'ai', difficulty: state.difficulty, outcome }));
     } else {
       const winner = state.status === 'draw' ? 0 : state.win!.player;
@@ -101,7 +104,7 @@ export default function Home() {
       {!started ? (
         <div className="flex flex-col items-center gap-4">
           <ModeMenu onStart={start} defaultDifficulty={data?.settings.difficulty ?? 'medium'} />
-          {data && <StatsPanel data={data} storageOk={storageOk.current} />}
+          {data && <StatsPanel data={data} storageOk={storageOk} />}
         </div>
       ) : (
         <>
