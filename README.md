@@ -4,7 +4,7 @@ Connect Four with a real opponent: minimax + alpha-beta pruning at three difficu
 
 <!-- TODO(manual): record demo GIF with ScreenToGif and replace this line -->
 
-**Live demo:** https://dropfour.vercel.app <!-- update after deploy -->
+**Live demo:** https://dropfour-eta.vercel.app
 
 ## Features
 
